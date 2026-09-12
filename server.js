@@ -9,7 +9,7 @@ const app = express();
 const PORT = 5000;
 
 // Connect to MongoDB
-mongoose.connect("mongodb://127.0.0.1:27017/codealpha_store")
+mongoose.connect(process.env.MONGODB_URI)
     .then(() => {
         console.log("MongoDB connected successfully!");
     })
