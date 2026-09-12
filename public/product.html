@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - CodeAlpha Store</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>🛒 CodeAlpha Store</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="index.html#products">Products</a>
+            <a href="index.html#cart">Cart 🛒</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2>Product Details</h2>
+
+        <div id="product-details">
+            Loading product...
+        </div>
+    </div>
+
+    <script>
+        async function loadProduct() {
+
+            const productId = new URLSearchParams(window.location.search)
+                .get("id");
+
+            if (!productId) {
+                document.getElementById("product-details").innerHTML =
+                    "<p>Product not found.</p>";
+                return;
+            }
+
+            try {
+
+                const response = await fetch("/api/products/" + productId);
+                const product = await response.json();
+
+                if (!response.ok) {
+                    throw new Error("Product not found");
+                }
+
+                document.getElementById("product-details").innerHTML = `
+                    <div class="product">
+                        <img src="${product.image}" alt="${product.name}">
+                        <h3>${product.name}</h3>
+                        <p>₹${product.price}</p>
+                        <p>${product.description}</p>
+                        <button onclick="addToCart()">
+                            Add to Cart
+                        </button>
+                    </div>
+                `;
+
+            } catch (error) {
+
+                document.getElementById("product-details").innerHTML =
+                    "<p>Unable to load product.</p>";
+            }
+        }
+
+       function addToCart() {
+    const product = {
+        name: document.querySelector("#product-details h3").textContent,
+        price: Number(
+            document.querySelector("#product-details p").textContent.replace("₹", "")
+        ),
+        quantity: 1
+    };
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    const existingItem = cart.find(item => item.name === product.name);
+
+    if (existingItem) {
+        existingItem.quantity++;
+    } else {
+        cart.push(product);
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    alert("Product added to cart! 🛒");
+}
+
+        loadProduct();
+    </script>
+
+</body>
+</html>
