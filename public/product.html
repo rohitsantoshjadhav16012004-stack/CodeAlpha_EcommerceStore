@@ -94,4 +94,290 @@
     </script>
 
 </body>
+</html><!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Product Details - CodeAlpha Store</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="site-header">
+
+        <div class="header-inner">
+
+            <a href="index.html" class="store-brand">
+
+                <img src="/images/codealpha-logo.webp"
+                    alt="CodeAlpha Logo"
+                    class="codealpha-logo">
+
+                <div class="store-name">
+                    <strong>Store</strong>
+                    <span>Smart Shopping</span>
+                </div>
+
+            </a>
+
+            <nav class="main-nav">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="index.html#products">
+                    Products
+                </a>
+
+                <a href="index.html#features">
+                    Why Us
+                </a>
+
+                <a href="cart.html" class="cart-link">
+                    🛒 Cart
+                </a>
+
+                <a href="login.html" class="login-link">
+                    Login
+                </a>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+    <!-- PRODUCT DETAILS -->
+
+    <main>
+
+        <div class="container">
+
+            <div class="section-heading">
+
+                <p>PRODUCT INFORMATION</p>
+
+                <h2>Product Details</h2>
+
+                <span>
+                    View product information and add it to your cart.
+                </span>
+
+            </div>
+
+            <div id="product-details">
+                Loading product...
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <div class="footer-content">
+
+            <div>
+
+                <h2>CodeAlpha Store</h2>
+
+                <p>
+                    A full-stack e-commerce project built
+                    with modern web technologies.
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <h3>Quick Links</h3>
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="index.html#products">
+                    Products
+                </a>
+
+                <a href="cart.html">
+                    Cart
+                </a>
+
+                <a href="login.html">
+                    Login
+                </a>
+
+            </div>
+
+
+            <div>
+
+                <h3>Project Features</h3>
+
+                <p>Product Catalogue</p>
+
+                <p>Shopping Cart</p>
+
+                <p>User Authentication</p>
+
+                <p>Order Processing</p>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            © 2026 CodeAlpha Store.
+            Built for learning and development.
+
+        </div>
+
+    </footer>
+
+
+    <script>
+
+        async function loadProduct() {
+
+            const productId =
+                new URLSearchParams(window.location.search).get("id");
+
+            if (!productId) {
+
+                document.getElementById("product-details").innerHTML =
+                    "<p>Product not found.</p>";
+
+                return;
+            }
+
+
+            try {
+
+                const response =
+                    await fetch("/api/products/" + productId);
+
+                const product =
+                    await response.json();
+
+
+                if (!response.ok) {
+                    throw new Error("Product not found");
+                }
+
+
+                document.getElementById("product-details").innerHTML = `
+
+                    <div class="product">
+
+                        <img
+                            src="${product.image}"
+                            alt="${product.name}"
+                        >
+
+                        <h3>
+                            ${product.name}
+                        </h3>
+
+                        <p>
+                            ₹${product.price}
+                        </p>
+
+                        <p>
+                            ${product.description}
+                        </p>
+
+                        <button onclick="addToCart()">
+                            Add to Cart
+                        </button>
+
+                    </div>
+
+                `;
+
+            } catch (error) {
+
+                document.getElementById("product-details").innerHTML =
+                    "<p>Unable to load product.</p>";
+
+            }
+
+        }
+
+
+        function addToCart() {
+
+            const productName =
+                document.querySelector("#product-details h3").textContent;
+
+            const productPrice =
+                Number(
+                    document
+                        .querySelector("#product-details p")
+                        .textContent
+                        .replace("₹", "")
+                );
+
+
+            const product = {
+
+                name: productName,
+
+                price: productPrice,
+
+                quantity: 1
+
+            };
+
+
+            let cart =
+                JSON.parse(localStorage.getItem("cart")) || [];
+
+
+            const existingItem =
+                cart.find(item => item.name === product.name);
+
+
+            if (existingItem) {
+
+                existingItem.quantity++;
+
+            } else {
+
+                cart.push(product);
+
+            }
+
+
+            localStorage.setItem(
+                "cart",
+                JSON.stringify(cart)
+            );
+
+
+            alert("Product added to cart! 🛒");
+
+        }
+
+
+        loadProduct();
+
+    </script>
+
+</body>
+
 </html>

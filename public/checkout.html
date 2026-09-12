@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Checkout - CodeAlpha Store</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="site-header">
+
+        <div class="header-inner">
+
+            <a href="index.html" class="store-brand">
+
+                <img
+                    src="/images/codealpha-logo.webp"
+                    alt="CodeAlpha Logo"
+                    class="codealpha-logo"
+                >
+
+                <div class="store-name">
+                    <strong>Store</strong>
+                    <span>Smart Shopping</span>
+                </div>
+
+            </a>
+
+            <nav class="main-nav">
+
+                <a href="index.html">Home</a>
+
+                <a href="index.html#products">Products</a>
+
+                <a href="index.html#features">Why Us</a>
+
+                <a href="cart.html">
+                    🛒 Cart
+                </a>
+
+                <a href="login.html" class="login-link">
+                    Login
+                </a>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+    <!-- CHECKOUT -->
+
+    <main>
+
+        <div class="container checkout-container">
+
+            <div class="section-heading">
+
+                <p>SECURE CHECKOUT</p>
+
+                <h2>Complete Your Order</h2>
+
+                <span>
+                    Enter your details and review your order before placing it.
+                </span>
+
+            </div>
+
+
+            <div class="checkout-layout">
+
+
+                <!-- CUSTOMER DETAILS -->
+
+                <div class="checkout-card">
+
+                    <h3>Customer Details</h3>
+
+                    <form id="checkoutForm">
+
+                        <div class="input-group">
+
+                            <label for="customerName">
+                                Full Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="customerName"
+                                placeholder="Enter your full name"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="customerEmail">
+                                Email Address
+                            </label>
+
+                            <input
+                                type="email"
+                                id="customerEmail"
+                                placeholder="Enter your email"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="input-group">
+
+                            <label for="address">
+                                Delivery Address
+                            </label>
+
+                            <textarea
+                                id="address"
+                                placeholder="Enter your delivery address"
+                                rows="4"
+                                required
+                            ></textarea>
+
+                        </div>
+
+
+                        <button
+                            type="submit"
+                            class="auth-button"
+                        >
+                            Place Order →
+                        </button>
+
+                    </form>
+
+                    <p id="message" class="auth-message"></p>
+
+                </div>
+
+
+                <!-- ORDER SUMMARY -->
+
+                <div class="checkout-card">
+
+                    <h3>Order Summary</h3>
+
+                    <div id="checkout-items">
+                        Loading cart...
+                    </div>
+
+                    <div class="checkout-total">
+
+                        <span>
+                            Total Amount
+                        </span>
+
+                        <strong>
+                            ₹<span id="checkout-total">0</span>
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <div class="footer-content">
+
+            <div>
+
+                <h2>CodeAlpha Store</h2>
+
+                <p>
+                    A full-stack e-commerce project built
+                    with modern web technologies.
+                </p>
+
+            </div>
+
+
+            <div>
+
+                <h3>Quick Links</h3>
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="index.html#products">
+                    Products
+                </a>
+
+                <a href="cart.html">
+                    Cart
+                </a>
+
+                <a href="login.html">
+                    Login
+                </a>
+
+            </div>
+
+
+            <div>
+
+                <h3>Project Features</h3>
+
+                <p>Product Catalogue</p>
+
+                <p>Shopping Cart</p>
+
+                <p>User Authentication</p>
+
+                <p>Order Processing</p>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            © 2026 CodeAlpha Store.
+            Built for learning and development.
+
+        </div>
+
+    </footer>
+
+
+    <!-- CHECKOUT SCRIPT -->
+
+    <script>
+
+        let cart =
+            JSON.parse(localStorage.getItem("cart")) || [];
+
+
+        const checkoutItems =
+            document.getElementById("checkout-items");
+
+        const checkoutTotal =
+            document.getElementById("checkout-total");
+
+
+        function displayCheckout() {
+
+            checkoutItems.innerHTML = "";
+
+            let total = 0;
+
+
+            if (cart.length === 0) {
+
+                checkoutItems.innerHTML =
+                    "<p>Your cart is empty 🛒</p>";
+
+                checkoutTotal.textContent = "0";
+
+                return;
+            }
+
+
+            cart.forEach((item) => {
+
+                const div =
+                    document.createElement("div");
+
+                div.innerHTML = `
+
+                    <div class="checkout-item">
+
+                        <div>
+
+                            <strong>
+                                ${item.name}
+                            </strong>
+
+                            <span>
+                                Quantity: ${item.quantity}
+                            </span>
+
+                        </div>
+
+                        <strong>
+                            ₹${item.price * item.quantity}
+                        </strong>
+
+                    </div>
+
+                `;
+
+                checkoutItems.appendChild(div);
+
+
+                total +=
+                    item.price * item.quantity;
+
+            });
+
+
+            checkoutTotal.textContent = total;
+
+        }
+
+
+        document
+            .getElementById("checkoutForm")
+            .addEventListener("submit", async function(event) {
+
+                event.preventDefault();
+
+
+                if (cart.length === 0) {
+
+                    alert("Your cart is empty!");
+
+                    return;
+                }
+
+
+                const customerName =
+                    document.getElementById("customerName").value;
+
+                const customerEmail =
+                    document.getElementById("customerEmail").value;
+
+                const address =
+                    document.getElementById("address").value;
+
+
+                const total =
+                    cart.reduce(
+                        (sum, item) =>
+                            sum + item.price * item.quantity,
+                        0
+                    );
+
+
+                try {
+
+                    const response =
+                        await fetch("/api/orders", {
+
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+
+                            body: JSON.stringify({
+
+                                customerName,
+
+                                customerEmail,
+
+                                address,
+
+                                items: cart,
+
+                                total
+
+                            })
+
+                        });
+
+
+                    const data =
+                        await response.json();
+
+
+                    if (!response.ok) {
+
+                        alert("Order failed!");
+
+                        return;
+                    }
+
+
+                    alert(
+                        "Order placed successfully! 🎉"
+                    );
+
+
+                    cart = [];
+
+                    localStorage.setItem(
+                        "cart",
+                        JSON.stringify(cart)
+                    );
+
+
+                    window.location.href =
+                        "index.html";
+
+
+                } catch (error) {
+
+                    alert(
+                        "Server error. Please try again."
+                    );
+
+                    console.log(error);
+
+                }
+
+            });
+
+
+        displayCheckout();
+
+    </script>
+
+</body>
+
+</html>

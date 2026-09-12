@@ -5,18 +5,27 @@ const orderSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+
     customerEmail: {
         type: String,
         required: true
     },
+
+    address: {
+        type: String,
+        required: true
+    },
+
     items: {
         type: Array,
         required: true
     },
+
     total: {
         type: Number,
         required: true
     },
+
     orderDate: {
         type: Date,
         default: Date.now

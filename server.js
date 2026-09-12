@@ -38,37 +38,7 @@ app.post("/api/products", async (req, res) => {
 });
 
 
-app.get("/api/update-images", async (req, res) => {
-    try {
-        await Product.updateOne(
-            { name: "Wireless Headphones" },
-            { image: "/images/headphones.jpg" }
-        );
 
-        await Product.updateOne(
-            { name: "Smart Watch" },
-            { image: "/images/smartwatch.jpg" }
-        );
-
-        await Product.updateOne(
-            { name: "Bluetooth Speaker" },
-            { image: "/images/speaker.jpg" }
-        );
-
-        await Product.updateOne(
-            { name: "Gaming Mouse" },
-            { image: "/images/mouse.jpg" }
-        );
-
-        res.json({ message: "Product images updated successfully!" });
-
-    } catch (error) {
-        res.status(500).json({
-            message: "Failed to update images",
-            error: error.message
-        });
-    }
-});
 
 app.get("/api/products", async (req, res) => {
     try {
@@ -171,14 +141,15 @@ if (!isPasswordCorrect) {
 
 app.post("/api/orders", async (req, res) => {
     try {
-        const { customerName, customerEmail, items, total } = req.body;
+       const { customerName, customerEmail, address, items, total } = req.body;
 
-        const order = new Order({
-            customerName,
-            customerEmail,
-            items,
-            total
-        });
+       const order = new Order({
+    customerName,
+    customerEmail,
+    address,
+    items,
+    total
+});
 
         await order.save();
 

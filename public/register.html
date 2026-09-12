@@ -1,62 +1,246 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - CodeAlpha Store</title>
+
+    <title>Create Account - CodeAlpha Store</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body class="auth-page">
 
-    <header>
-        <h1>🛒 CodeAlpha Store</h1>
+    <!-- HEADER -->
+    <header class="auth-header">
+
+        <a href="index.html" class="store-brand">
+
+            <img
+                src="/images/codealpha-logo.webp"
+                alt="CodeAlpha Logo"
+                class="codealpha-logo"
+            >
+
+            <div class="store-name">
+                <strong>Store</strong>
+                <span>Smart Shopping</span>
+            </div>
+
+        </a>
+
     </header>
 
-    <div class="container">
-        <h2>Create Account</h2>
 
-        <form id="register-form">
+    <!-- REGISTER -->
 
-            <input type="text" id="name" placeholder="Enter your name" required>
-            <br><br>
+    <main class="auth-container">
 
-            <input type="email" id="register-email" placeholder="Enter your email" required>
-            <br><br>
+        <div class="auth-card">
 
-            <input type="password" id="register-password" placeholder="Create a password" required>
-            <br><br>
+            <div class="auth-icon">
+                👤
+            </div>
 
-            <button type="submit">Register</button>
+            <h1>Create Account</h1>
 
-        </form>
-    </div>
+            <p class="auth-subtitle">
+                Join CodeAlpha Store and start shopping today.
+            </p>
+
+
+            <form id="registerForm">
+
+                <div class="input-group">
+
+                    <label for="name">
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        placeholder="Enter your full name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Enter your email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Create a password"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="auth-button"
+                >
+                    Create Account →
+                </button>
+
+            </form>
+
+
+            <p
+                id="message"
+                class="auth-message"
+            ></p>
+
+
+            <div class="auth-divider">
+
+                <span>
+                    Already have an account?
+                </span>
+
+            </div>
+
+
+            <a
+                href="login.html"
+                class="secondary-button"
+            >
+                Login to Your Account
+            </a>
+
+
+            <a
+                href="index.html"
+                class="back-home"
+            >
+                ← Back to Store
+            </a>
+
+        </div>
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <footer class="auth-footer">
+
+        © 2026 CodeAlpha Store • Built for learning and development
+
+    </footer>
+
+
+    <!-- REGISTER SCRIPT -->
 
     <script>
-document.getElementById("register-form").addEventListener("submit", async (event) => {
-    event.preventDefault();
 
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("register-email").value;
-    const password = document.getElementById("register-password").value;
+        document
+            .getElementById("registerForm")
+            .addEventListener("submit", async function(event) {
 
-    const response = await fetch("/api/register", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            name: name,
-            email: email,
-            password: password
-        })
-    });
+                event.preventDefault();
 
-    const data = await response.json();
 
-    alert(data.message);
-});
-</script>
+                const name =
+                    document.getElementById("name").value;
+
+                const email =
+                    document.getElementById("email").value;
+
+                const password =
+                    document.getElementById("password").value;
+
+                const message =
+                    document.getElementById("message");
+
+
+                try {
+
+                    const response =
+                        await fetch("/api/register", {
+
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+
+                            body: JSON.stringify({
+                                name,
+                                email,
+                                password
+                            })
+
+                        });
+
+
+                    const data =
+                        await response.json();
+
+
+                    if (!response.ok) {
+
+                        message.textContent =
+                            data.message;
+
+                        message.className =
+                            "auth-message error";
+
+                        return;
+
+                    }
+
+
+                    message.textContent =
+                        data.message;
+
+                    message.className =
+                        "auth-message success";
+
+
+                    document
+                        .getElementById("registerForm")
+                        .reset();
+
+
+                } catch (error) {
+
+                    message.textContent =
+                        "Server error. Please try again.";
+
+                    message.className =
+                        "auth-message error";
+
+                }
+
+            });
+
+    </script>
 
 </body>
+
 </html>
