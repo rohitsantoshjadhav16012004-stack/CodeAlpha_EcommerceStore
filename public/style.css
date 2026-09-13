@@ -1,3 +1,4 @@
+
 /* =====================================================
    GLOBAL
 ===================================================== */
@@ -56,6 +57,7 @@ body {
     text-decoration: none;
     color: #172033;
 }
+
 .codealpha-logo {
     width: 190px;
     height: 65px;
@@ -63,7 +65,6 @@ body {
     display: block;
     transform: scale(1.45);
 }
-
 
 .store-name {
     display: flex;
@@ -74,20 +75,9 @@ body {
 }
 
 .store-name strong {
-    font-size: 22px;
-    color: #172033;
-    line-height: 1.2;
-}
-
-.store-name span {
-    font-size: 11px;
-    color: #64748b;
-    margin-top: 4px;
-}
-
-.store-name strong {
     font-size: 20px;
     color: #172033;
+    line-height: 1.2;
 }
 
 .store-name span {
@@ -201,9 +191,6 @@ body {
     overflow: hidden;
 }
 
-
-/* Hero text */
-
 .hero-content {
     max-width: 620px;
 }
@@ -306,9 +293,6 @@ body {
     justify-content: center;
 }
 
-
-/* Background glow */
-
 .showcase-glow {
     position: absolute;
 
@@ -323,9 +307,6 @@ body {
 
     filter: blur(45px);
 }
-
-
-/* Main product card */
 
 .main-showcase-card {
     position: relative;
@@ -581,6 +562,8 @@ body {
 
 .products {
     display: grid;
+
+    /* 4 products on laptop/desktop */
     grid-template-columns: repeat(4, 1fr);
 
     gap: 22px;
@@ -1175,7 +1158,7 @@ footer {
    TABLET
 ===================================================== */
 
-@media (max-width: 950px) {
+@media (max-width: 700px) {
 
     .header-inner {
         flex-direction: column;
